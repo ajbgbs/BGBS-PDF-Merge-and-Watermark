@@ -1,118 +1,78 @@
-{
-  "openapi": "3.0.0",
-  "info": {
-    "title": "PDF Merge and Watermark API",
-    "description": "An API to merge multiple PDFs or apply a watermark to a PDF using base64 encoding.",
-    "version": "1.0.0"
-  },
-  "servers": [
-    {
-      "url": "http://localhost:5000",
-      "description": "Local server"
-    }
-  ],
-  "paths": {
-    "/merge": {
-      "post": {
-        "summary": "Merge multiple PDFs",
-        "description": "Accepts a list of base64-encoded PDFs and merges them into a single PDF.",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "pdfs": {
-                    "type": "array",
-                    "items": {
-                      "type": "string",
-                      "description": "Base64-encoded PDF string"
-                    },
-                    "description": "List of base64-encoded PDF strings to be merged."
-                  }
-                },
-                "required": ["pdfs"]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Merged PDF returned as base64",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "merged_pdf": {
-                      "type": "string",
-                      "description": "Base64-encoded merged PDF string"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid input"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        }
-      }
-    },
-    "/watermark": {
-      "post": {
-        "summary": "Apply a watermark to a PDF",
-        "description": "Accepts a base64-encoded PDF and a base64-encoded watermark, applies the watermark to all pages of the PDF, and returns the result.",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "pdf": {
-                    "type": "string",
-                    "description": "Base64-encoded PDF string"
-                  },
-                  "watermark": {
-                    "type": "string",
-                    "description": "Base64-encoded watermark PDF string"
-                  }
-                },
-                "required": ["pdf", "watermark"]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Watermarked PDF returned as base64",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "watermarked_pdf": {
-                      "type": "string",
-                      "description": "Base64-encoded watermarked PDF string"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid input"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        }
-      }
-    }
-  }
-}
+openapi: 3.0.0
+info:
+  title: PDF Merge and Watermark API
+  description: An API to merge multiple PDFs or apply a watermark to a PDF using base64 encoding.
+  version: 1.0.0
+servers:
+  - url: https://bgbs-pdf-merge-and-watermark-fhggcvbab9ccezat.uksouth-01.azurewebsites.net/
+    description: Azure Web Service
+paths:
+  /merge:
+    post:
+      summary: Merge multiple PDFs
+      description: Accepts a list of base64-encoded PDFs and merges them into a single PDF.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pdfs:
+                  type: array
+                  items:
+                    type: string
+                    description: Base64-encoded PDF string
+                  description: List of base64-encoded PDF strings to be merged.
+              required:
+                - pdfs
+      responses:
+        '200':
+          description: Merged PDF returned as base64
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  merged_pdf:
+                    type: string
+                    description: Base64-encoded merged PDF string
+        '400':
+          description: Invalid input
+        '500':
+          description: Internal server error
+  /watermark:
+    post:
+      summary: Apply a watermark to a PDF
+      description: Accepts a base64-encoded PDF and a base64-encoded watermark, applies the watermark to all pages of the PDF, and returns the result.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pdf:
+                  type: string
+                  description: Base64-encoded PDF string
+                watermark:
+                  type: string
+                  description: Base64-encoded watermark PDF string
+              required:
+                - pdf
+                - watermark
+      responses:
+        '200':
+          description: Watermarked PDF returned as base64
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  watermarked_pdf:
+                    type: string
+                    description: Base64-encoded watermarked PDF string
+        '400':
+          description: Invalid input
+        '500':
+          description: Internal server error
